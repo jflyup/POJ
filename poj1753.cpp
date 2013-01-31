@@ -91,6 +91,7 @@ int flip()
 				if(!status_set.test(num_status))
 				{
 					status_set.set(num_status);
+					//remember where current status comes from.
 					path[num_status] = stat;
 					stat_queue.push(num_status);
 				}
