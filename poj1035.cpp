@@ -1,11 +1,11 @@
 #include <cstdio>
 #include <vector>
 #include <string>
-#include <set>
 #include <cstring>
 #include <algorithm>
 
-int edit_distance(std::string & a, std::string & b)
+//Dynamic Programming Algorithm for Edit-Distance is too slow for this scenario
+/*int edit_distance(std::string & a, std::string & b)
 {
 	int row = a.size() + 1;
 	int column = b.size() + 1;
@@ -30,29 +30,38 @@ int edit_distance(std::string & a, std::string & b)
 		free(matrix[i]);
 	free(matrix);
 	return result;
-}
+}*/
 
 bool similarity(std::string a, std::string b)
 {
-	int diff = 0;
 	if(a.size() == b.size())
 	{
+		int diff = 0;
 		for(int i = 0; i < a.size(); ++i)
 		{
 			if(a[i] != b[i])
 				diff++;
 			if(diff > 1)
-				return false;
+				break;
 		}
+		if(diff > 1)
+			return false;
+		else
+			return true;
 	}
 	else
 	{
 		if(a.size() > b.size() )
 			swap(a, b);
-		if(!strstr(a.c_str(), b.c_str() ) )
-			return false;
+		for(int i = 0; i < b.size(); ++i)
+		{
+			std::string tmp_str = b;
+			tmp_str.erase(tmp_str.begin() + i);
+			if(tmp_str == a)
+				return true;
+		}
+		return false;
 	}
-	return true;
 }
 
 struct ITEM
