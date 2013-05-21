@@ -32,35 +32,27 @@
 	return result;
 }*/
 
-bool similarity(std::string a, std::string b)
+int similarity(const char * a, const char * b)
 {
-	if(a.size() == b.size())
+	int la = strlen(a);
+	int lb = strlen(b);
+	while(*a == *b )
 	{
-		int diff = 0;
-		for(int i = 0; i < a.size(); ++i)
-		{
-			if(a[i] != b[i])
-				diff++;
-			if(diff > 1)
-				break;
-		}
-		if(diff > 1)
-			return false;
-		else
-			return true;
+		a++;
+		b++;
+	}
+
+	if(la == lb)
+	{
+		return strcmp(a + 1, b + 1);
+	}
+	else if(la < lb)
+	{
+		return strcmp(a, b + 1);
 	}
 	else
 	{
-		if(a.size() > b.size() )
-			swap(a, b);
-		for(int i = 0; i < b.size(); ++i)
-		{
-			std::string tmp_str = b;
-			tmp_str.erase(tmp_str.begin() + i);
-			if(tmp_str == a)
-				return true;
-		}
-		return false;
+		return strcmp(a + 1, b);
 	}
 }
 
@@ -78,17 +70,18 @@ bool comp(const ITEM & a, const ITEM & b)
 
 int main()
 {
-	//std::set<std::string> dict_set;
+	//if the compiler supports c++ 2011 standard, std::unordered_set container is perfect for this scenario due to  
+	// the requirement that the replacements should be written in the order of their appearance in the dictionary
 	std::vector<ITEM> dict;
 	int sequence;
+	//A terminating null character is automatically added at the end of the stored sequence.
+	char word[16];
 	while(1)
 	{
-		char word[16];
 		scanf("%s", word);
 		sequence++;
 		if(word[0] != '#')
 		{
-			//dict_set.insert(word);
 			ITEM tmp_item;
 			tmp_item.m_word = word;
 			tmp_item.m_sequence_num = sequence;
@@ -101,13 +94,10 @@ int main()
 	std::sort(dict.begin(), dict.end());
 	while(1)
 	{
-		char word[16];
 		scanf("%s", word);
 		if(word[0] != '#')
 		{
 			printf("%s", word);
-			//if(dict_set.find(word) != dict_set.end() )
-				//printf(" is correct");
 			bool is_correct = false;
 			ITEM equal_item;
 			equal_item.m_word = word;
@@ -136,8 +126,7 @@ int main()
 				std::vector<ITEM> similar_words;
 				for(low; low != up; ++low)
 				{
-					std::string temp_str(word);
-					if(similarity(low->m_word, temp_str) )
+					if(!similarity(low->m_word.c_str(), word) )
 						similar_words.push_back(*low);
 				}
 				std::sort(similar_words.begin(), similar_words.end(), comp);
