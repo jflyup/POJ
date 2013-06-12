@@ -7,9 +7,6 @@ std::bitset< (2 << 15) > status_set;
 unsigned long path[2 << 15] = {0};
 
 short move[5][2] = {{0, 0}, {-1, 0}, {1, 0}, {0, -1}, {0, 1}};
-//short board[N][N] = {{0, 0, 0, 0}, {0, 0, 1, 0}, {0, 0, 0, 1}, {0, 0, 1, 1}};
-
-//short board[N][N] = {{1, 0, 0, 1}, {1, 1, 0 ,1}, {1, 0, 0, 1}, {1, 0, 0, 0}};
 
 std::queue < unsigned long> stat_queue;
 
