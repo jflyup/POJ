@@ -2,7 +2,7 @@
 #include <stdlib.h>
 
 //given at most 500,000 numbers, so the number of swap operations is less than 500000*499999/2
-long g_swap_count;
+long long g_swap_count;
 
 void merge(int *a, int s, int m, int e)
 {
@@ -70,7 +70,7 @@ int main()
 
 			merge_sort(array, 0, size - 1);
 			free(array);
-			printf("%ld\n", g_swap_count);
+			printf("%lld\n", g_swap_count);
 		}
 		else
 			break;
