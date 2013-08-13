@@ -13,6 +13,11 @@ int lcs(const char* a, const char* b)
 {
 	int row = strlen(a)+ 1;
 	int column = strlen(b) + 1;
+	/** 
+	* If only the length of the LCS is required, the matrix can be reduced to a 2 * min(row, column)matrix with ease,
+	*  or to a min(row, column) + 1 vector (smarter) as the dynamic programming approach only needs the current
+	* and previous columns of the matrix.
+	*/
 	int **matrix = (int**)malloc(sizeof(int*) * row);
 	int i, j;
 	for(i = 0; i < row; ++i)
@@ -32,6 +37,7 @@ int lcs(const char* a, const char* b)
 	for(i = 0; i < row; ++i)
 		free(matrix[i]);
 	free(matrix);
+	
 	return result;
 }
 
