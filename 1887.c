@@ -4,15 +4,16 @@
 #define NMAX 10240
 
 /**
-* the array is sorted in descending order.
-* return the index of the first element that's not greater than the target element
+* the array isn't strictly descending,
+* return the index of the first element that's less than the target element
+* case: 7 5 7 6
 **/
 int binary_search(int *a, int value, int start, int end)
 {
 	while(start <= end)
 	{
 		int mid = (start + end) / 2;
-		if(a[mid] > value)
+		if(a[mid] >= value)
 		{
 			start = mid + 1;
 		}
