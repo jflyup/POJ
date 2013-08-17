@@ -17,60 +17,72 @@ int compar(const void *x, const void *y)
 		return a->weight - b->weight;
 }
 
+//return the index of the first element that's not less than the target element
+int binary_search(int * array, int size, int key)
+{
+	int low  = 0;
+	int high = size - 1;
+	while (low <= high)
+	{
+		int mid = (low + high) / 2; // Or a fancy way to avoid int overflow
+		// use "<=" if we want to find the the first element that's greater than the target element
+		if(array[mid] < key)
+			low  = mid + 1;
+		else
+			high = mid - 1;
+	}
+	return low ;
+}
+
 //Dilworth's theorem: in any finite partially ordered set, the maximum number of elements in any antichain 
 //equals the minimum number of chains in any partition of the set into chains.
-//according to this theorem, to solve this problem, we need get the maximun number of elements in any antichain
-int longest_antichain(STICK* sticks, int length)
+//according to this theorem, to solve this problem, we need get the maximum number of elements in any antichain
+int longest_antichain(STICK* sticks, int size)
 {
-	int *value = (int*)malloc(sizeof(int) * length);
-	int i, j;
-	for(i = 0; i < length; ++i)
-		value[i] = 1;
-	for(i = 1; i < length; ++i)
+	int * max_vector = (int*)malloc(sizeof(int) * size);
+	max_vector[0] = sticks[size - 1].weight;
+	int inc_length = 1;
+	int i;
+	for(i = size - 2; i >= 0; --i)
 	{
-		for(j = 0; j < i; ++j) 
+		if(sticks[i].weight > max_vector[inc_length - 1])
 		{
-			if(sticks[j].weight > sticks[i].weight)
-			{
-				int temp = value[j] + 1;
-				if(temp > value[i])
-					value[i] = temp;
-			}
+			max_vector[inc_length++] = sticks[i].weight;
+		}
+		else
+		{
+			// or we can do the binary search by calling lower_bound() or upper_bound() provided by stl
+			max_vector[binary_search(max_vector, inc_length, sticks[i].weight)] = sticks[i].weight;
 		}
 	}
 
-	int max = value[0];
-	for(i = 0; i < length; ++i)
-	{
-		if(value[i] > max)
-			max = value[i];
-	}
-
-	return max;
+	free(max_vector);
+	return inc_length;
 }
 
-process_input()
+void process_input(void)
 {
 	int cases;
 	scanf("%d", &cases);
 	int i, j; 
 	for(i = 0; i < cases; ++i)
 	{
-		int pairs;
-		scanf("%d", &pairs);
-		STICK* sticks = (STICK*)malloc(sizeof(STICK) * pairs);
-		for(j = 0; j < pairs; ++j)
+		int n_sticks;
+		scanf("%d", &n_sticks);
+		STICK* sticks = (STICK*)malloc(sizeof(STICK) * n_sticks);
+		for(j = 0; j < n_sticks; ++j)
 		{
 			scanf("%d", &sticks[j].length);
 			scanf("%d", &sticks[j].weight);
 		}
-		qsort(sticks, pairs, sizeof(STICK), compar);
-		int setup_count = longest_antichain(sticks, pairs);
+		qsort(sticks, n_sticks, sizeof(STICK), compar);
+		int setup_time = longest_antichain(sticks, n_sticks);
 		free(sticks);
-		printf("%d\n", setup_count);
+		printf("%d\n", setup_time);
 	}
 
 }
+
 int main()
 {
 	process_input();
