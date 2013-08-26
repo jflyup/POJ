@@ -6,7 +6,7 @@
 /**
 * the array isn't strictly descending,
 * return the index of the first element that's less than the target element
-* case: 7 5 7 6
+* test data: 7 5 7 6
 **/
 int binary_search(int *a, int value, int start, int end)
 {
